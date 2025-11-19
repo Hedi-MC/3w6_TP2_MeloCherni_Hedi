@@ -2,8 +2,54 @@
 
 <script>
     // TODO: Ajouter la méthode highlightByName()
+    function highlightByName(){
+    console.log("--------------BREAK NAME--------------")
+    var elements = document.getElementsByTagName("tr");
+
+
+    for(var i = 0;i<elements.length-1;i++){
+        var element = elements[i+1];
+        let inputAvecId = document.getElementById("inputId");
+        let nomAvecId = document.getElementById("idNom"+i);
+
+        var nom= nomAvecId.value;
+        var input= inputAvecId.value;
+        const lowerNom =nom.toLowerCase();
+        const lowerInput =input.toLowerCase();
+
+       
+        if(lowerNom.includes(lowerInput)){
+             element.style.backgroundColor="yellow"
+             console.log(lowerNom)
+        }
+        else{
+            element.style.backgroundColor= "transparent"
+        }
+    }
+        
+        
+
+
+    
+    }
+
 
     // TODO: Ajouter la méthode filterByDate()
+    filterByDate(){
+         console.log("--------------BREAK DATE--------------")
+    var elements = document.getElementsByTagName("tr");
+
+
+    for(var i = 0;i<elements.length;i++){
+        var element = elements[i];
+        let dateAvecId = document.getElementById("dateId");
+  
+
+    }
+     
+
+
+    }
 </script>
 
 @{
@@ -17,10 +63,10 @@
 </p>
 
 <h4>@Locals["HighlightByName"]</h4>
-<input type="text" oninput="highlightByName()" />
+<input id="inputId" type="text" oninput="highlightByName()" />
 
 <h4>@Locals["FilterByDate"]</h4>
-<input type="date" />
+<input id="dateId" type="date" />
 <button onclick="filterByDate()" class="btn btn-primary">@Locals["Filter"]</button>
 
 <table class="table">
@@ -31,6 +77,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Certification)
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateCertification)
@@ -39,15 +86,19 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @{
+            int i = 0;
+            foreach (var item in Model) {
+
         <tr>
             <td>
                  <a asp-action="Filter" asp-controller="Trainer" asp-route-SearchNameText="@item.Trainer.FullName">
                     @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                    @Html.HiddenFor(modelItem => item.Trainer.FullName, new {id="idNom" +i})
                 </a>
             </td>
             <td>
-                <a asp-action="Details" asp-controller="Certification" asp-route-id="@item.Certification_Id">   @Html.DisplayFor(modelItem => item.Certification.FullTitle) </a>
+                <a asp-action="Details" asp-controller="Certification" asp-route-id="@item.Certification_Id" class="Date">   @Html.DisplayFor(modelItem => item.Certification.FullTitle) </a>
             </td>
             <td>
                 @item.DateCertification.ToShortDateString()
@@ -58,6 +109,10 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">@Locals["Delete"]</a>
             </td>
         </tr>
+                i += 1;
+}
 }
     </tbody>
 </table>
+
+
